@@ -15,8 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
+from django.views import static as django_static_views
+from django.conf import settings
+from django.conf.urls.static import static
+import os
 
-urlpatterns = [
+# Configure static file serving first
+urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# API endpoints
+urlpatterns += [
     path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+    path('api/users/', include('users.urls')),
+]
+
+# Special handling for assets directory
+urlpatterns += [
+    re_path(r'^assets/(?P<path>.*)$', django_static_views.serve, {
+        'document_root': os.path.join(settings.BASE_DIR, '../frontend/dist/assets'),
+    }),
+]
+
+# Serve frontend SPA for all other routes
+urlpatterns += [
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ]
