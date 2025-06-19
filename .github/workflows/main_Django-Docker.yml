@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c1de83aaadec4138bc06d09affc793a2 }}/ryanmyrmel/django-azure-boiler:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c1de83aaadec4138bc06d09affc793a2 }}/django-azure-boiler:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'Django-Docker'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_0272fafba2f54b9b80ba699665d4ce6f }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c1de83aaadec4138bc06d09affc793a2 }}/ryanmyrmel/django-azure-boiler:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c1de83aaadec4138bc06d09affc793a2 }}/django-azure-boiler:${{ github.sha }}'
