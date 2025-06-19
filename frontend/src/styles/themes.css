@@ -1,0 +1,175 @@
+/* Theme CSS Variables */
+
+/* Default theme variables - applied to :root */
+:root {
+  /* Primary colors */
+  --primary-color: #0056b3;
+  --primary-color-light: #007bff;
+  --primary-color-dark: #004494;
+  
+  /* Background colors */
+  --bg-color: #ffffff;
+  --bg-color-alt: #f8f9fa;
+  --bg-color-dark: #e9ecef;
+  
+  /* Text colors */
+  --text-color: #212529;
+  --text-color-light: #495057;
+  --text-color-muted: #6c757d;
+  
+  /* Border colors */
+  --border-color: #dee2e6;
+  --border-color-focus: #80bdff;
+  
+  /* Button colors */
+  --btn-primary-bg: var(--primary-color);
+  --btn-primary-text: white;
+  --btn-secondary-bg: #f8f9fa;
+  --btn-secondary-text: #212529;
+  
+  /* Component specific */
+  --header-bg: var(--bg-color);
+  --footer-bg: var(--bg-color-alt);
+  --card-bg: var(--bg-color);
+  --dropdown-bg: var(--bg-color);
+  --dropdown-hover-bg: var(--bg-color-alt);
+  
+  /* Status colors */
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --info-color: #17a2b8;
+
+  /* Transitions */
+  --transition-speed: 0.2s;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  /* Primary colors - slightly brighter for better contrast */
+  --primary-color: #0d6efd;
+  --primary-color-light: #3d8bfd;
+  --primary-color-dark: #0a58ca;
+  
+  /* Background colors */
+  --bg-color: #212529;
+  --bg-color-alt: #343a40;
+  --bg-color-dark: #1a1d20;
+  
+  /* Text colors */
+  --text-color: #f8f9fa;
+  --text-color-light: #e9ecef;
+  --text-color-muted: #adb5bd;
+  
+  /* Border colors */
+  --border-color: #495057;
+  --border-color-focus: #86b7fe;
+  
+  /* Button colors */
+  --btn-primary-bg: var(--primary-color);
+  --btn-primary-text: white;
+  --btn-secondary-bg: #343a40;
+  --btn-secondary-text: #f8f9fa;
+  
+  /* Component specific */
+  --header-bg: var(--bg-color);
+  --footer-bg: var(--bg-color-dark);
+  --card-bg: var(--bg-color-alt);
+  --dropdown-bg: var(--bg-color-alt);
+  --dropdown-hover-bg: #2c3237;
+  
+  /* Status colors */
+  --success-color: #198754;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+  --info-color: #0dcaf0;
+}
+
+/* High Contrast Theme */
+[data-theme="high-contrast"] {
+  /* Primary colors */
+  --primary-color: #0000ff;
+  --primary-color-light: #2929ff;
+  --primary-color-dark: #0000cc;
+  
+  /* Background colors */
+  --bg-color: #ffffff;
+  --bg-color-alt: #f0f0f0;
+  --bg-color-dark: #e0e0e0;
+  
+  /* Text colors */
+  --text-color: #000000;
+  --text-color-light: #222222;
+  --text-color-muted: #444444;
+  
+  /* Border colors */
+  --border-color: #000000;
+  --border-color-focus: #0000ff;
+  
+  /* Button colors */
+  --btn-primary-bg: #0000ff;
+  --btn-primary-text: white;
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-text: #000000;
+  
+  /* Component specific */
+  --header-bg: #000000;
+  --footer-bg: #000000;
+  --card-bg: var(--bg-color);
+  --dropdown-bg: var(--bg-color);
+  --dropdown-hover-bg: #f0f0f0;
+  
+  /* Status colors */
+  --success-color: #008000;
+  --warning-color: #ffa500;
+  --danger-color: #ff0000;
+  --info-color: #00bfff;
+}
+
+/* Solarized Light Theme */
+[data-theme="solarized-light"] {
+  /* Primary colors */
+  --primary-color: #268bd2;
+  --primary-color-light: #2aa198;
+  --primary-color-dark: #6c71c4;
+  
+  /* Background colors */
+  --bg-color: #fdf6e3;
+  --bg-color-alt: #eee8d5;
+  --bg-color-dark: #93a1a1;
+  
+  /* Text colors */
+  --text-color: #657b83;
+  --text-color-light: #586e75;
+  --text-color-muted: #839496;
+  
+  /* Border colors */
+  --border-color: #93a1a1;
+  --border-color-focus: #2aa198;
+  
+  /* Button colors */
+  --btn-primary-bg: var(--primary-color);
+  --btn-primary-text: #fdf6e3;
+  --btn-secondary-bg: #eee8d5;
+  --btn-secondary-text: #657b83;
+  
+  /* Component specific */
+  --header-bg: var(--bg-color);
+  --footer-bg: var(--bg-color-alt);
+  --card-bg: var(--bg-color);
+  --dropdown-bg: var(--bg-color);
+  --dropdown-hover-bg: var(--bg-color-alt);
+  
+  /* Status colors */
+  --success-color: #859900;
+  --warning-color: #b58900;
+  --danger-color: #dc322f;
+  --info-color: #2aa198;
+}
+
+/* Theme transition effects */
+* {
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
+}

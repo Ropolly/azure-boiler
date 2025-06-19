@@ -1,0 +1,153 @@
+.footer {
+  background-color: var(--footer-bg, #f8f9fa);
+  color: var(--text-color, #333);
+  padding: 2rem 0;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color, #eaeaea);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.footer-col {
+  flex: 1 0 170px;
+  margin-bottom: 1.5rem;
+  padding: 0 15px;
+  /* Limit columns for better readability */
+  max-width: 250px;
+}
+
+/* Special column for theme and social links */
+.footer-col:last-child {
+  flex: 0 0 200px;
+}
+
+.footer-col h4 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+  margin-top: 0;
+  position: relative;
+  color: var(--text-color, #333);
+  font-weight: 600;
+}
+
+.social-header {
+  margin-top: 1.5rem; /* Space between theme switcher and social links */
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  color: var(--text-color-muted, #6c757d);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-col ul li a:hover {
+  color: var(--primary-color, #0d6efd);
+  transform: translateX(5px);
+}
+
+.social-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  background-color: var(--bg-color-alt, #f1f1f1);
+  border-radius: 50%;
+  color: var(--text-color, #333);
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.social-links a:hover {
+  background-color: var(--primary-color, #0d6efd);
+  color: white;
+  transform: translateY(-3px);
+}
+
+.social-icon {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, #eaeaea);
+  color: var(--text-color-muted, #6c757d);
+  font-size: 0.9rem;
+}
+
+/* Make footer stick to bottom */
+@media screen and (min-height: 900px) {
+  .app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-content {
+    flex: 1;
+  }
+}
+
+/* Handle overfilling by hiding overflow categories on medium screens */
+@media (max-width: 992px) {
+  .footer-row {
+    justify-content: space-between;
+  }
+  
+  .footer-col {
+    flex: 0 0 calc(33% - 20px);
+  }
+  
+  /* Always keep the theme switcher visible */
+  .footer-col:last-child {
+    flex: 0 0 200px;
+  }
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 768px) {
+  .footer-row {
+    flex-direction: column;
+  }
+  
+  .footer-col {
+    flex-basis: 100%;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .footer-col:last-child {
+    order: -1; /* Move theme switcher to the top on mobile */
+  }
+}
