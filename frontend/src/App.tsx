@@ -11,6 +11,7 @@ import { ProductsPage } from './pages/ProductsPage'
 import { ServicesPage } from './pages/ServicesPage'
 import { AdminPage } from './pages/AdminPage'
 import { LoginPage } from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 import { UnauthorizedPage } from './pages/UnauthorizedPage'
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

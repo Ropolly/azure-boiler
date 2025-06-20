@@ -27,5 +27,13 @@ echo "===== Setting up Django ====="
 python manage.py migrate
 python manage.py collectstatic --noinput
 
+echo "===== Clearing port 8000 ====="
+# find any PID listening on 8000 and kill it
+PIDS=$(lsof -t -i:8000) || true
+if [ -n "$PIDS" ]; then
+    echo "Killing existing process(es) on port 8000: $PIDS"
+    kill -9 $PIDS
+fi
+
 echo "===== Starting Django Server ====="
 python manage.py runserver 0.0.0.0:8000

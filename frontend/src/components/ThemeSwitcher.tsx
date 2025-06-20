@@ -9,10 +9,10 @@ export const ThemeSwitcher = () => {
   const { selectedTheme, setTheme } = useUser();
 
   const themes: { id: ThemeType; name: string }[] = [
-    { id: 'default', name: 'Default' },
+    { id: 'light', name: 'Light' },
     { id: 'dark', name: 'Dark' },
-    { id: 'high-contrast', name: 'High Contrast' },
-    { id: 'solarized-light', name: 'Solarized Light' }
+    { id: 'blue', name: 'Blue' },
+    { id: 'system', name: 'System' }
   ];
 
   const handleThemeChange = (theme: ThemeType) => {

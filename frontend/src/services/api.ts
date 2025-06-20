@@ -31,7 +31,7 @@ class ApiService {
    * Get the authorization header with the current token
    */
   private getAuthHeader(): Record<string, string> {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('accessToken');
     return token ? { Authorization: `Bearer ${token}` } : {};
   }
   

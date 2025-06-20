@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { PermissionLevel, type PermissionLevelType } from './permissions';
+import { authService } from '../../services/authService';
 
 // Define the User type
 export interface User {
@@ -12,19 +13,19 @@ export interface User {
   avatar?: string;
 }
 
-// Available themes
-export type ThemeType = 'default' | 'dark' | 'high-contrast' | 'solarized-light';
+// Available themes - make sure these match the THEME_CHOICES in backend/users/models.py
+export type ThemeType = 'light' | 'dark' | 'blue' | 'system';
 
 // Define the context type
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
   isAuthenticated: boolean;
-  login: (token: string) => Promise<void>;
-  logout: () => void;
+  login: (username: string, password: string) => Promise<User>;
+  logout: () => Promise<void>;
   hasRole: (role: PermissionLevelType) => boolean;
   selectedTheme: ThemeType;
-  setTheme: (theme: ThemeType) => void;
+  setTheme: (theme: ThemeType) => Promise<void>;
 }
 
 // Create context with a default value
@@ -41,7 +42,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [selectedTheme, setSelectedTheme] = useState<ThemeType>(() => {
     // Check if theme is stored in localStorage
     const savedTheme = localStorage.getItem('userTheme') as ThemeType;
-    return savedTheme || 'default';
+    return savedTheme || 'system';
   });
 
   // Check if the user is authenticated
@@ -60,12 +61,21 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   // Set theme function
-  const setTheme = (theme: ThemeType) => {
+  const setTheme = async (theme: ThemeType) => {
     setSelectedTheme(theme);
     localStorage.setItem('userTheme', theme);
     
     // Apply theme to document
     document.documentElement.setAttribute('data-theme', theme);
+    
+    // If user is authenticated, save theme preference to backend
+    if (user) {
+      try {
+        await authService.updateTheme(theme);
+      } catch (error) {
+        console.error('Failed to update theme preference:', error);
+      }
+    }
   };
 
   // Apply the theme on component mount and when it changes
@@ -73,36 +83,62 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     document.documentElement.setAttribute('data-theme', selectedTheme);
   }, [selectedTheme]);
 
-  // Login function - processes token and sets the user
-  const login = async (token: string) => {
+  // Login function - authenticates with backend and sets the user
+  const login = async (username: string, password: string) => {
     try {
-      // In a real app, you would validate the token and fetch user data
-      // This is just a placeholder
-      if (token) {
-        // Store token in localStorage
-        localStorage.setItem('authToken', token);
-        
-        // For demo, create a mock user
-        // In production, you'd decode the token or make an API call
-        const mockUser: User = {
-          id: '1',
-          username: 'demouser',
-          roles: [PermissionLevel.USER]
-        };
-        
-        setUser(mockUser);
+      const response = await authService.login({ username, password });
+      
+      // Set user and their theme
+      setUser(response.user);
+      
+      // Set user's theme if they have one saved
+      if (response.user) {
+        const userTheme = localStorage.getItem('userTheme') as ThemeType || 'system';
+        setSelectedTheme(userTheme);
+        document.documentElement.setAttribute('data-theme', userTheme);
       }
+      
+      return response.user;
     } catch (error) {
       console.error('Login failed:', error);
       logout();
+      throw error;
     }
   };
 
   // Logout function
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setUser(null);
+    }
   };
+
+  // Check for existing token and load user on mount
+  useEffect(() => {
+    const loadUser = async () => {
+      if (authService.isAuthenticated()) {
+        try {
+          const currentUser = await authService.getCurrentUser();
+          setUser(currentUser);
+          
+          // Apply user's theme if available
+          const userTheme = localStorage.getItem('userTheme') as ThemeType || 'system';
+          setSelectedTheme(userTheme);
+          document.documentElement.setAttribute('data-theme', userTheme);
+        } catch (error) {
+          console.error('Failed to load user:', error);
+          // Token might be expired or invalid
+          authService.clearTokens();
+        }
+      }
+    };
+    
+    loadUser();
+  }, []);
 
   return (
     <UserContext.Provider value={{ 

@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 export const LoginPage = () => {
   const { login, isAuthenticated } = useUser();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,10 +24,10 @@ export const LoginPage = () => {
     setError(null);
 
     try {
-      // Simulate a login - in a real app this would use the authService
-      await login('mock-token-for-testing');
+      // Call the login function from UserContext with username and password
+      await login(username, password);
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      setError('Invalid username or password. Please try again.');
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
@@ -42,12 +42,12 @@ export const LoginPage = () => {
         
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="username">Username</label>
             <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
