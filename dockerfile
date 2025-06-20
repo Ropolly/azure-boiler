@@ -46,8 +46,7 @@ COPY --from=frontend-build /app/frontend/dist /app/frontend/dist
 WORKDIR /app/backend
 
 # Run migrations and collect static files
-RUN python manage.py migrate --noinput && \
-    python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Expose ports
 EXPOSE 8000
