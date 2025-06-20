@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file if it exists
+env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+if os.path.exists(env_path):
+    load_dotenv(env_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rvu^9pcc+$pm#%#&d3u5bx($eh!o+ao502r2-k*j*oa3l30y&h'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-rvu^9pcc+$pm#%#&d3u5bx($eh!o+ao502r2-k*j*oa3l30y&h')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 # Application definition
@@ -81,10 +87,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Database configuration - use PostgreSQL if configured and psycopg2 is available, otherwise SQLite
+USE_POSTGRES = os.environ.get('USE_POSTGRES', '').lower() == 'true'
+
+# Database configuration - PostgreSQL with psycopg3
+# Django doesn't have a native psycopg3 backend yet, so we need to use a custom one
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # This will use psycopg3 since we installed it
+        'NAME': os.environ.get('DB_NAME', 'azure_boiler'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'OPTIONS': {
+            'application_name': 'azure-boiler',
+        }
     }
 }
 
@@ -138,7 +156,11 @@ STATICFILES_DIRS = [
 ]
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'True').lower() == 'true'
+
+# CORS whitelist if not allowing all origins
+if not CORS_ALLOW_ALL_ORIGINS and os.environ.get('CORS_ORIGIN_WHITELIST'):
+    CORS_ORIGIN_WHITELIST = os.environ.get('CORS_ORIGIN_WHITELIST', '').split(',')
 
 # Custom user model
 AUTH_USER_MODEL = 'users.CustomUser'

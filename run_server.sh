@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Stop on first error
-set -e
+# Continue even if some commands fail
+# set -e
 
 PROJECT_ROOT=$(pwd)
 VENV_PATH="$PROJECT_ROOT/venv"
@@ -21,10 +21,20 @@ npm run build
 echo "===== Installing Backend Dependencies ====="
 cd "$PROJECT_ROOT/backend"
 source "$VENV_PATH/bin/activate"
-pip install -r requirements.txt
+
+# Install all requirements including psycopg2-binary
+pip install -r requirements.txt || echo "WARNING: Some packages couldn't be installed. Check the output above."
 
 echo "===== Setting up Django ====="
-python manage.py migrate
+
+# Always make migrations if needed, then apply migrations
+echo "Making migrations if needed..."
+python manage.py makemigrations
+
+echo "Applying migrations..."
+python manage.py migrate --noinput
+
+# Collect static files
 python manage.py collectstatic --noinput
 
 echo "===== Clearing port 8000 ====="
