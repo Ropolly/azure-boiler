@@ -15,6 +15,7 @@ interface RegisterData {
   first_name: string;
   last_name: string;
   selected_theme?: ThemeType;
+  roles?: string;
 }
 
 interface TokenResponse {

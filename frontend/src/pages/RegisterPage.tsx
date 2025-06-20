@@ -47,7 +47,8 @@ const RegisterPage = () => {
         password,
         first_name: firstName,
         last_name: lastName,
-        selected_theme: selectedTheme
+        selected_theme: selectedTheme,
+        roles: 'user' // Default role for new users
       });
       
       // Navigate to dashboard on successful registration & login
